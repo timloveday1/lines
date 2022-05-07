@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- custom font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap"
+      rel="stylesheet"
+    />
+    <!-- end custom font -->
+
+    <title>Lines</title>
+
+    <!-- styles -->
+    <style>
+      body {
+        font-family: "Dosis", sans-serif;
+        margin: 2em;
+        background-size: cover;
+        background-color: #000;
+        color: #fff;
+        font-size: 1.2em;
+      }
+      h1 {
+        color: #fff;
+        padding-bottom: 1.5em;
+        margin-bottom: 0;
+        opacity: 0;
+        transition: opacity 0.5s ease-in;
+      }
+      #poem {
+        opacity: 0;
+        transition: opacity 0.5s ease-in;
+      }
+      #poem > div {
+        height: 1.2em;
+      }
+      .indent {
+        padding-left: 1em;
+      }
+      .right {
+        text-align: right;
+      }
+      .stanza-gap {
+        margin-top: 2em;
+      }
+      
+      /* start button stuff */
+      #start {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 30%;
+        height: 3em;
+        line-height: 3em;
+        text-align: center;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        border-radius: 10px;
+        border-color: none;
+        margin: 0;
+        padding: 0;
+        transition: opacity 0.5s ease-out;
+      }
+      .started h1 {
+        opacity: 1;
+      }
+      .started #poem {
+        opacity: 1;
+      }
+      .started #start {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      /* backgrounds */
+      .bg-powerlines {
+        background-image: url('https://cdn.glitch.global/6d2118c8-39f1-4f88-8258-04ab1b1be0db/powerlines.jpg?v=1651893278428');
+      }
+    </style>
+  </head>
+  <body class="bg-powerlines">
+    <h1>Lines</h1>
+    <button id="start">Lines</button>
+    <div id="poem"></div>
+    <script>
+      // set up the counter
+      let lineCounter = 0;
+      let stanzaNumber = 0;
+      let lineNumber = 0;
+      let stanzaSide = false;
+      let maxLines = 15;
+      
+
+      var poemArray = [
+        [
+          "Colonised cartographies cross pages",
+          "New Holland, Van Diemen’s Land,",
+          "New South Wales",
+          "Ink seeps topographic features",
+          "Terra—forming—Australis",
+          "Etching names, places, people",
+          "Reindexed as GIS data",
+          "Annexed by bureaucrats",
+        ],
+        [
+          "Cross-referenced in spreadsheets",
+          "Where column and row intersect",
+          "A Procrustean solution",
+          "Little children will be confined",
+          "Three-and-a-half steps to the door",
+          "One-and-a-half steps across",
+          "Lacking natural light",
+          "No running water",
+        ],
+        [
+          "With each column and row",
+          "Aggregate the details",
+          "Every name a statistic",
+          "Every cell a crime scene",
+          "Multiplied and replicated",
+          "Divided and incubated",
+          "A melanoma for a sunburnt country",
+          "Hidden under pale concealer",
+        ],
+        [
+          "With each column and row",
+          "Count the bodies in custody",
+          "Add a new sheet for the morgue",
+          "In this autopsy",
+          "Bones as bleached white",
+          "As coral reefs which reach",
+          "Beyond to islands creaking",
+          "In deep oceans like prison hulks",
+        ],
+        [
+          "Liberty is reserved for",
+          "Coal, iron ore, gold and meat",
+          "Office machines and crude oil",
+          "We are all sold short",
+          "As stocks and futures trade",
+          "Blinking in and out of",
+          "Landlocked servers",
+          "On holidays in the Caribbean",
+        ],
+        [
+          "Contour lines extend past coastlines",
+          "Thin paper becomes rigid",
+          "As swallowed razor blades",
+          "For foundering ships, rocks",
+          "A calcification of public discourse",
+          "Recourse left unrepresented",
+          "To sentences of detention",
+          "Or refoulement at sea",
+        ],
+      ];
+
+
+      // add a line to the poem constructed from the lists of words
+      function addLine(indent = false) {
+        // create the line
+        const line = document.createElement("div");
+        if (indent === true) {
+          // indent is true so add an indent class
+          line.classList.add("indent");
+        }
+  
+        // New stanza
+        // get line and reset if greater than current
+        if (lineNumber >= poemArray[stanzaNumber].length) {
+          stanzaNumber++;
+          lineNumber = 0;
+          stanzaSide = !stanzaSide;
+          line.classList.add('stanza-gap');
+        }
+
+        if (stanzaSide) {
+          line.classList.add("right");
+        }
+        
+        // reset the poem if at the end
+        if (stanzaNumber >= poemArray.length) {
+          stanzaNumber = 0;
+          lineNumber = 0;
+        }        
+        
+        const lineText = document.createTextNode(poemArray[stanzaNumber][lineNumber]);
+        line.appendChild(lineText);
+        // get the poem
+        const poem = document.getElementById("poem");
+        poem.appendChild(line);
+        lineNumber++;
+      }
+      
+      // add a blank line to the poem
+      function addBlankLine() {
+        const line = document.createElement("div");
+        const poem = document.getElementById("poem");
+        poem.appendChild(line);
+      }
+      
+      // remove the first line from the poem
+      function removeFirstLine() {
+        const poem = document.getElementById("poem");
+        poem.removeChild(poem.childNodes[0]);
+      }
+      
+      // implement the rules of the poem
+      function processPoem() {
+        lineCounter++;
+        addLine();
+        if (lineCounter > maxLines) {
+          removeFirstLine();
+        }
+      }
+      
+      function startPoem() {
+        // Add started class
+        document.body.classList.add('started');
+        
+        // Create {maxLines} blank lines
+        for (let i = 0; i < maxLines; i++)
+        {
+          // Add blank line
+          addBlankLine(); 
+          // Increment line counter
+          lineCounter++;
+        }
+
+        // Start polling every second
+        // TODO: move processPoem to audio callback
+        window.setInterval(processPoem, 1000);
+      }
+      
+      document.getElementById('start').addEventListener('click', startPoem);
+      
+    </script>
+  </body>
+</html>
