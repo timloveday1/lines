@@ -18,11 +18,13 @@
     <style>
       body {
         font-family: "Dosis", sans-serif;
-        margin: 2em;
+        margin: 2em 2em 0 2em;
         background-size: cover;
         background-color: #000;
         color: #fff;
         font-size: 1.2em;
+        max-height: 400px;
+        overflow: hidden;
       }
       h1 {
         color: #fff;
@@ -30,6 +32,7 @@
         margin-bottom: 0;
         opacity: 0;
         transition: opacity 0.5s ease-in;
+        text-align: center;
       }
       #poem {
         opacity: 0;
@@ -44,10 +47,10 @@
       .right {
         text-align: right;
       }
-      .stanza-gap {
+      /* .stanza-gap {
         margin-top: 2em;
-      }
-      
+      } */
+
       /* start button stuff */
       #start {
         position: fixed;
@@ -75,25 +78,32 @@
         opacity: 0;
         pointer-events: none;
       }
-      
+
       /* backgrounds */
       .bg-powerlines {
-        background-image: url('https://cdn.glitch.global/6d2118c8-39f1-4f88-8258-04ab1b1be0db/powerlines.jpg?v=1651893278428');
+        background-image: url("https://cdn.glitch.global/6d2118c8-39f1-4f88-8258-04ab1b1be0db/powerlines.jpg?v=1651893278428");
+      }
+      .train-lines {
+        max-width: 400px;
+        margin: auto;
+        height: 100%;
       }
     </style>
   </head>
   <body class="bg-powerlines">
-    <h1>Lines</h1>
-    <button id="start">Lines</button>
-    <div id="poem"></div>
+    <div class="train-lines">
+      <h1>Lines</h1>
+      <button id="start">Lines</button>
+      <div id="poem"></div>
+    </div>
+
     <script>
       // set up the counter
       let lineCounter = 0;
       let stanzaNumber = 0;
       let lineNumber = 0;
       let stanzaSide = false;
-      let maxLines = 15;
-      
+      let maxLines = 30;
 
       var poemArray = [
         [
@@ -105,6 +115,7 @@
           "Etching names, places, people",
           "Reindexed as GIS data",
           "Annexed by bureaucrats",
+          "",
         ],
         [
           "Cross-referenced in spreadsheets",
@@ -115,6 +126,7 @@
           "One-and-a-half steps across",
           "Lacking natural light",
           "No running water",
+          "",
         ],
         [
           "With each column and row",
@@ -125,6 +137,7 @@
           "Divided and incubated",
           "A melanoma for a sunburnt country",
           "Hidden under pale concealer",
+          "",
         ],
         [
           "With each column and row",
@@ -135,6 +148,7 @@
           "As coral reefs which reach",
           "Beyond to islands creaking",
           "In deep oceans like prison hulks",
+          "",
         ],
         [
           "Liberty is reserved for",
@@ -145,6 +159,7 @@
           "Blinking in and out of",
           "Landlocked servers",
           "On holidays in the Caribbean",
+          "",
         ],
         [
           "Contour lines extend past coastlines",
@@ -155,9 +170,9 @@
           "Recourse left unrepresented",
           "To sentences of detention",
           "Or refoulement at sea",
+          "",
         ],
       ];
-
 
       // add a line to the poem constructed from the lists of words
       function addLine(indent = false) {
@@ -167,47 +182,49 @@
           // indent is true so add an indent class
           line.classList.add("indent");
         }
-  
+
         // New stanza
         // get line and reset if greater than current
         if (lineNumber >= poemArray[stanzaNumber].length) {
           stanzaNumber++;
           lineNumber = 0;
           stanzaSide = !stanzaSide;
-          line.classList.add('stanza-gap');
+          // line.classList.add('stanza-gap');
         }
 
         if (stanzaSide) {
           line.classList.add("right");
         }
-        
+
         // reset the poem if at the end
         if (stanzaNumber >= poemArray.length) {
           stanzaNumber = 0;
           lineNumber = 0;
-        }        
-        
-        const lineText = document.createTextNode(poemArray[stanzaNumber][lineNumber]);
+        }
+
+        const lineText = document.createTextNode(
+          poemArray[stanzaNumber][lineNumber]
+        );
         line.appendChild(lineText);
         // get the poem
         const poem = document.getElementById("poem");
         poem.appendChild(line);
         lineNumber++;
       }
-      
+
       // add a blank line to the poem
       function addBlankLine() {
         const line = document.createElement("div");
         const poem = document.getElementById("poem");
         poem.appendChild(line);
       }
-      
+
       // remove the first line from the poem
       function removeFirstLine() {
         const poem = document.getElementById("poem");
         poem.removeChild(poem.childNodes[0]);
       }
-      
+
       // implement the rules of the poem
       function processPoem() {
         lineCounter++;
@@ -216,16 +233,15 @@
           removeFirstLine();
         }
       }
-      
+
       function startPoem() {
         // Add started class
-        document.body.classList.add('started');
-        
+        document.body.classList.add("started");
+
         // Create {maxLines} blank lines
-        for (let i = 0; i < maxLines; i++)
-        {
+        for (let i = 0; i < maxLines; i++) {
           // Add blank line
-          addBlankLine(); 
+          addBlankLine();
           // Increment line counter
           lineCounter++;
         }
@@ -234,9 +250,16 @@
         // TODO: move processPoem to audio callback
         window.setInterval(processPoem, 1000);
       }
-      
-      document.getElementById('start').addEventListener('click', startPoem);
-      
+
+      document.getElementById("start").addEventListener("click", startPoem);
     </script>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div
+      class="glitchButton"
+      style="position: fixed; top: 20px; right: 20px"
+    ></div>
+    <script src="https://button.glitch.me/button.js" defer></script>
   </body>
 </html>
