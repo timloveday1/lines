@@ -17,7 +17,7 @@
     <!-- styles -->
     <style>
       body {
-        font-family: "Dosis", sans-serif;
+        font-family: 'Tinos', serif;
         margin: 2em 2em 0 2em;
         background-size: cover;
         background-color: #000;
@@ -36,10 +36,19 @@
       }
       #poem {
         opacity: 0;
+        height: calc(100% - 5em);
+        width: 50%;
+        max-width: 500px;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
+        position: absolute;
+        z-index: 1;
         transition: opacity 0.5s ease-in;
       }
       #poem > div {
         height: 1.2em;
+        white-space: pre;
       }
       .indent {
         padding-left: 1em;
@@ -54,15 +63,31 @@
       /* start button stuff */
       #start {
         position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        line-height: 3em;
+        text-align: center;
+        background: #fff;
+        margin: 0;
+        padding: 0;
+        transition: opacity 5.5s ease-out;
+        background-image: url("https://cdn.glitch.global/6d2118c8-39f1-4f88-8258-04ab1b1be0db/Screen%20Shot%202022-04-09%20at%2012.47.56%20pm.png?v=1652590987131");
+        background-size: cover;
+      }
+      #start button {
+        position: absolute;
         top: 50%;
         left: 50%;
-        width: 30%;
+        width: 20%;
         height: 3em;
         line-height: 3em;
         text-align: center;
         transform: translate(-50%, -50%);
         background: #fff;
-        border-radius: 10px;
+        border-radius: 5px;
         border-color: none;
         margin: 0;
         padding: 0;
@@ -93,7 +118,7 @@
   <body class="bg-powerlines">
     <div class="train-lines">
       <h1>Lines</h1>
-      <button id="start">Lines</button>
+      <div id="start"><button id="startbtn">Lines</button></div>
       <div id="poem"></div>
     </div>
 
@@ -104,78 +129,230 @@
       let lineNumber = 0;
       let stanzaSide = false;
       let maxLines = 30;
+      let audioPlayer;
 
       var poemArray = [
         [
-          "Colonised cartographies cross pages",
-          "New Holland, Van Diemen’s Land,",
-          "New South Wales",
-          "Ink seeps topographic features",
-          "Terra—forming—Australis",
-          "Etching names, places, people",
-          "Reindexed as GIS data",
-          "Annexed by bureaucrats",
+          "then, my father six foot two",
+          "shoulders back and proud",
+          "with blazing hair of orange", 
+          "gold and hands like", 
+          "obliterators",
           "",
         ],
         [
-          "Cross-referenced in spreadsheets",
-          "Where column and row intersect",
-          "A Procrustean solution",
-          "Little children will be confined",
-          "Three-and-a-half steps to the door",
-          "One-and-a-half steps across",
-          "Lacking natural light",
-          "No running water",
+          "he takes me in those quiet hours",
+          "not far too far from sleep",	
+          "crosses me across his chest and",
+          "sings me through the morning drive", 
+          "the streets dark blue and empty",
           "",
         ],
         [
-          "With each column and row",
-          "Aggregate the details",
-          "Every name a statistic",
-          "Every cell a crime scene",
-          "Multiplied and replicated",
-          "Divided and incubated",
-          "A melanoma for a sunburnt country",
-          "Hidden under pale concealer",
+          "and at the tracks",
+          "the station humming",
+          "he tells me of those men",
+          "that drive those dirty trains",
+          "across this dry flat country",
           "",
         ],
         [
-          "With each column and row",
-          "Count the bodies in custody",
-          "Add a new sheet for the morgue",
-          "In this autopsy",
-          "Bones as bleached white",
-          "As coral reefs which reach",
-          "Beyond to islands creaking",
-          "In deep oceans like prison hulks",
+          "as the steam comes rushing up",
+          "swallowed by a starlit sky",
+          "and the rails do their shrieking",
+          "he lifts me up like holy cargo",
+          "up up! into the cabin",
+          "",
+          "",
+          "",
           "",
         ],
         [
-          "Liberty is reserved for",
-          "Coal, iron ore, gold and meat",
-          "Office machines and crude oil",
-          "We are all sold short",
-          "As stocks and futures trade",
-          "Blinking in and out of",
-          "Landlocked servers",
-          "On holidays in the Caribbean",
+          "there, those men of lore", 	
+          "at their gears, rattle off",
+          "with tales of towns where", 
+          "water runs like blood",
+          "and the ladies 	yes!",
+          "they’ll take to bed when",
+          "this ironclad centipede", 
+          "settles in the west",
           "",
         ],
         [
-          "Contour lines extend past coastlines",
-          "Thin paper becomes rigid",
-          "As swallowed razor blades",
-          "For foundering ships, rocks",
-          "A calcification of public discourse",
-          "Recourse left unrepresented",
-          "To sentences of detention",
-          "Or refoulement at sea",
+          "and in the perspex horizon",
+          "with the powerlines like", 
+          "visages of founding fathers",
+          "i watch my father with",		 
+          "his arms of light",
+          "dancing subtly", 
+          "jerkily, angrily",
+          "",
+          "",
           "",
         ],
-      ];
+        [
+          "the first lines of sunlight",
+          "hit the railway lines",
+          "and the dull shimmer of the rails",
+          "become forces immutable ",
+          "",
+        ],
+        [
+          "this body moving",
+          "forward",
+          "", 
+        ],
+        [
+          "these men they carry on", 
+          "through tired work",
+          "carry on and on",
+          "with their sad little tales",
+          "of the uselessness of women",
+          "of the futility of youth",
+          "of the idiocy of dreams",
+          "of the madness of age",
+          "",
+        ],
+        [
+          "after, my father dressed in soot and grit",
+          "looks up at me from blue metal earth ",
+          "helps me defy gravity",
+          "feet dancing through the sky",
+          "",
+        ],
+        [
+          "my body then pulled close to him",
+          "a young fault-line across his chest",
+          "he says in the good old days",
+          "women were like packhorses ",
+          "used to shovel the shit",
+        ],
+        [
+          "ah the good old days they sigh	 ",
+          "when men were really men",
+          "",
+        ],
+        [
+          "their skin, their skin",
+          "like glass with sweat",
+          "my mouth a fine line",
+          "across my face",
+          "",
+        ],
+        [
+          "some years later",
+          "when girls have become so real to me",
+          "their shapes glorious stitch lines",
+          "in the fabric of all else",
+          "he tells me his head growing bald now",
+          "at the kitchen table, many times",
+          "like it is the first time and",
+          "the last time, every single time",
+          "'women are like horses",
+          "always getting in the way'",
+          "",
+        ],
+        [
+          "his jokes a boy as big as a man",
+          "are bones of meat",
+          "the flies circling ",
+          "diving, falling, rising up",
+          "the dull immutable in", 
+          "their million beaded eyes ",
+          "",
+        ],
+        [
+          "at twenty-eight, when these",		
+          "women will no longer have me",
+          "and the lines i use like trenchlines", 
+          "are the lines that my father left me",
+          "",
+        ],
+        [
+          "and as i talk of broken hearts",
+          "of the bitterness of being",
+          "he says, 'son women are like horses",
+          "if you fall off one get on another",
+          "and soon i’ll guarantee ya",
+          "you’ll forget about the first'",
+          "",
+        ],
+        [
+          "and i sit there thinking",
+          "all twenty-eight of barren nothing",
+          "in this town where i always end up",
+          "what’s with this old man", 
+          "and the bloody horses",	 
+          "",
+          "",
+          "",
+        ],
+        [        
+          "so i ask my mother secret keeper",	
+          "about his equine obsession",
+          "but my mother, fine strings",
+          "across her face, she doesn't",
+          "know	besides to say, 'he used",
+          "to waste his pennies on the ponies",
+          "always begging for the big buck bux",
+          "and never winnin’ nothin’' ",
+          "",
+        ],
+        [ 
+          "everyday, my mother says",
+          "he was there, his tickets",
+          "dancing subtly",
+          "jerkily, angrily",
+          "like a sullen horse",
+          "wringing out its mane",
+          "",
+          "",
+          "",
+          "",
+          "",
+        ],
+        [ 
+          "and so now, my father ",
+          "five foot eleven stooped",
+          "that golden hair 	",
+          "gone white and grey",
+          "and thin, so thin",
+          "a deforestation revealing ",
+          "the lines across his scalp",
+        ],
+        [ 
+          "those lines, almost mutable",
+          "dulled somewhat by",
+          "the quiet question of age",
+          "like faultlines like trenchlines",
+          "like tracklines like stitch lines",
+          "like powerlines like bloodlines",
+          "",
+        ],
+        [ 
+          "like almost",
+          "a lifeline between us",
+          "",
+        ],
+        [ 
+          "father",
+          "understand",
+          "the glue factory",
+          "is coming",
+          "",
+        ],
+        ];
 
       // add a line to the poem constructed from the lists of words
       function addLine(indent = false) {
+        // reset the poem if at the end
+        if (stanzaNumber >= poemArray.length) {
+          //stanzaNumber = 0;
+          //lineNumber = 0;
+          addBlankLine();
+          return;
+        }
+
         // create the line
         const line = document.createElement("div");
         if (indent === true) {
@@ -194,12 +371,6 @@
 
         if (stanzaSide) {
           line.classList.add("right");
-        }
-
-        // reset the poem if at the end
-        if (stanzaNumber >= poemArray.length) {
-          stanzaNumber = 0;
-          lineNumber = 0;
         }
 
         const lineText = document.createTextNode(
@@ -234,9 +405,25 @@
         }
       }
 
+      // create audio player
+      function createAudioPlayer() {
+        audioPlayer = document.createElement('audio');
+        audioPlayer.src = "https://cdn.glitch.global/6d2118c8-39f1-4f88-8258-04ab1b1be0db/Lines_Tim_Final_.mp3?v=1652593361037";
+      }
+
       function startPoem() {
+        // Create our audio player
+        createAudioPlayer();
+
         // Add started class
         document.body.classList.add("started");
+
+        // calculate poem height
+        addBlankLine();
+        let poemHeight = document.getElementById("poem").getBoundingClientRect().height;
+        let lineHeight = document.getElementById("poem").firstChild.getBoundingClientRect().height;
+        maxLines = Math.floor(poemHeight/lineHeight);
+        removeFirstLine();
 
         // Create {maxLines} blank lines
         for (let i = 0; i < maxLines; i++) {
@@ -248,10 +435,15 @@
 
         // Start polling every second
         // TODO: move processPoem to audio callback
-        window.setInterval(processPoem, 1000);
+        setTimeout(()=>{
+          window.setInterval(processPoem, 2000)
+        }, 4100);
+
+        // Play audio track
+        audioPlayer.play();
       }
 
-      document.getElementById("start").addEventListener("click", startPoem);
+      document.getElementById("startbtn").addEventListener("click", startPoem);
     </script>
 
     <!-- include the Glitch button to show what the webpage is about and
