@@ -73,7 +73,7 @@
         background: #fff;
         margin: 0;
         padding: 0;
-        transition: opacity 5.5s ease-out;
+        transition: opacity 4.5s 1s ease-out;
         background-image: url("https://cdn.glitch.global/6d2118c8-39f1-4f88-8258-04ab1b1be0db/Screen%20Shot%202022-04-09%20at%2012.47.56%20pm.png?v=1652590987131");
         background-size: cover;
       }
@@ -82,16 +82,26 @@
         top: 50%;
         left: 50%;
         width: 20%;
-        height: 3em;
-        line-height: 3em;
+        height: 2.5em;
+        line-height: 2.5em;
         text-align: center;
         transform: translate(-50%, -50%);
-        background: #fff;
-        border-radius: 5px;
-        border-color: none;
         margin: 0;
         padding: 0;
         transition: opacity 0.5s ease-out;
+        font-family: 'Tinos', serif;
+        font-weight: bold;
+        font-size: 1.3em;
+        font-style: italic;
+        background: rgba(255,255,255,0.25);
+        border: 2px solid transparent;
+        border-radius: 7px;
+        cursor: pointer;
+        transition: all 0.6s linear;
+      }
+      #start button:hover {
+        background: rgba(200,200,200,0.75);
+        border: 2px solid rgba(0,0,0,1);
       }
       .started h1 {
         opacity: 1;
@@ -100,6 +110,11 @@
         opacity: 1;
       }
       .started #start {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .started #start button {
+        transition: all 1s linear;
         opacity: 0;
         pointer-events: none;
       }
